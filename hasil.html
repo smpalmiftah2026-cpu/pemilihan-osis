@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b3a67" />
+  <title>Live Hasil Pemilihan OSIS | Al-Miftah</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <style>
+    :root{--navy:#0b3a67;--blue:#1677ff;--bg:#f4f8fc;--text:#132238;--muted:#6c7a8c;--card:#fff;--line:#dde7f1;--green:#16a36a;--orange:#ef9b28;--purple:#7a52d6}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#eaf5ff 0,#f7fbff 45%,#f4f8fc 100%);color:var(--text)}
+    .top{background:linear-gradient(120deg,#082f55,#0d4d82);color:#fff;padding:18px 18px 72px}.top-inner{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.brand{display:flex;gap:12px;align-items:center}.logo{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,#2196f3,#075cb3);font-weight:900;box-shadow:0 10px 24px #001f3d55}.eyebrow{font-size:12px;letter-spacing:.12em;font-weight:800;opacity:.8}.brand h1{font-size:20px;margin:2px 0 0}.switch{display:flex;gap:8px;background:#ffffff14;padding:5px;border-radius:14px;border:1px solid #ffffff2a}.switch button{border:0;border-radius:10px;padding:10px 18px;font-weight:800;cursor:pointer;background:transparent;color:#dcecff}.switch button.active{background:#fff;color:var(--navy)}
+    .wrap{max-width:1180px;margin:-50px auto 40px;padding:0 16px}.hero{background:var(--card);border:1px solid var(--line);box-shadow:0 18px 50px #0b3a6718;border-radius:24px;padding:24px;display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}.hero h2{margin:4px 0 8px;font-size:clamp(26px,4vw,42px)}.hero p{margin:0;color:var(--muted)}.live{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#eaf8f2;color:#08784c;border-radius:999px;font-weight:800}.dot{width:9px;height:9px;border-radius:50%;background:#16a36a;box-shadow:0 0 0 5px #16a36a20;animation:pulse 1.5s infinite}@keyframes pulse{50%{box-shadow:0 0 0 10px #16a36a00}}
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:16px 0}.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 26px #0b3a670b}.stat span{display:block;color:var(--muted);font-size:13px;font-weight:700}.stat strong{display:block;font-size:30px;margin-top:4px}.stat small{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1.35fr .85fr;gap:16px}.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 8px 26px #0b3a670b}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.panel h3{margin:0 0 14px}.refresh{border:1px solid var(--line);background:#f8fbff;border-radius:10px;padding:8px 10px;cursor:pointer;font-weight:700;color:var(--navy)}.chart{height:330px}.candidates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}.candidate{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 8px 26px #0b3a670b}.candidate-media{height:230px;background:#edf4fa;position:relative}.candidate-media img{width:100%;height:100%;object-fit:cover;display:block}.placeholder{height:100%;display:grid;place-items:center;font-size:54px;color:#8ba3ba}.badge{position:absolute;left:14px;top:14px;background:#0b3a67;color:#fff;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:20px;font-weight:900;box-shadow:0 7px 20px #001f3d40}.candidate-body{padding:16px}.names{display:grid;grid-template-columns:1fr 1fr;gap:12px}.names b{display:block;font-size:15px}.names small{color:var(--muted)}.vision{color:#526276;font-size:13px;line-height:1.55;margin:14px 0}.vote-row{display:flex;align-items:end;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:12px}.vote-row strong{font-size:28px;color:var(--navy)}.vote-row span{color:var(--muted);font-size:12px}.footer{text-align:center;color:#78889a;font-size:12px;padding:10px 16px 34px}.error{background:#fff0f0;border:1px solid #f2baba;color:#a52323;border-radius:14px;padding:12px 14px;margin-top:16px;display:none}.empty{color:var(--muted);padding:28px;text-align:center}.updated{font-size:12px;color:var(--muted);margin-top:8px}
+    @media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.candidates{grid-template-columns:1fr 1fr}.chart{height:300px}}
+    @media(max-width:620px){.top{padding-bottom:62px}.brand h1{font-size:17px}.switch{width:100%}.switch button{flex:1}.wrap{padding:0 10px}.hero{padding:18px;border-radius:20px}.stats{gap:9px}.stat{padding:14px}.stat strong{font-size:25px}.candidates{grid-template-columns:1fr}.candidate-media{height:260px}.panel{padding:14px;border-radius:18px}.chart{height:280px}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand"><div class="logo">AM</div><div><div class="eyebrow">LIVE PEMILIHAN OSIS</div><h1>SMP/SMA AL-MIFTAH</h1></div></div>
+      <div class="switch"><button id="smpBtn" type="button">SMP</button><button id="smaBtn" type="button">SMA</button></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div><div class="eyebrow" style="color:#4a6d91">PANTAUAN PEMILIHAN</div><h2 id="schoolTitle">Memuat data...</h2><p id="subtitle">Kandidat dan grafik hasil terhubung langsung dengan Supabase.</p><div id="updated" class="updated">—</div></div>
+      <div class="live"><span class="dot"></span><span>LIVE</span></div>
+    </section>
+
+    <div id="errorBox" class="error"></div>
+
+    <section class="stats">
+      <article class="stat"><span>Total Siswa</span><strong id="totalStudents">0</strong><small>terdaftar</small></article>
+      <article class="stat"><span>Sudah Memilih</span><strong id="votedStudents">0</strong><small id="participation">0%</small></article>
+      <article class="stat"><span>Belum Memilih</span><strong id="remainingStudents">0</strong><small>menunggu giliran</small></article>
+      <article class="stat"><span>Total Kandidat</span><strong id="candidateCount">0</strong><small>paslon aktif</small></article>
+    </section>
+
+    <section class="grid">
+      <article class="panel"><div class="panel-head"><h3>Grafik Perolehan Suara</h3><button class="refresh" id="refreshBtn" type="button">↻ Refresh</button></div><div class="chart"><canvas id="barChart"></canvas></div></article>
+      <article class="panel"><h3>Persentase Suara</h3><div class="chart"><canvas id="pieChart"></canvas></div></article>
+    </section>
+
+    <section style="margin-top:16px"><div class="panel-head"><h3 style="margin:0">Calon Ketua & Wakil Ketua OSIS</h3></div><div id="candidateCards" class="candidates"><div class="panel empty">Memuat kandidat...</div></div></section>
+  </main>
+
+  <footer class="footer">Halaman pantauan publik • Data pribadi siswa tidak ditampilkan • Pembaruan otomatis setiap 10 detik</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="config.js"></script>
+  <script>
+    (() => {
+      const cfg = window.APP_CONFIG || {};
+      const $ = id => document.getElementById(id);
+      const params = new URLSearchParams(location.search);
+      let unit = (params.get('unit') || 'SMP').toUpperCase() === 'SMA' ? 'SMA' : 'SMP';
+      let sb = null, bar = null, pie = null, loading = false;
+      const palette = ['#1677ff','#16a36a','#7a52d6','#ef9b28','#e34f65','#21a4a7'];
+
+      function esc(v=''){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+      function setUnit(u){unit=u; params.set('unit',u); history.replaceState(null,'',`${location.pathname}?${params.toString()}`); updateButtons(); load();}
+      function updateButtons(){ $('smpBtn').classList.toggle('active',unit==='SMP'); $('smaBtn').classList.toggle('active',unit==='SMA'); }
+      function showError(msg){$('errorBox').textContent=msg;$('errorBox').style.display='block';}
+      function clearError(){$('errorBox').style.display='none';}
+
+      function renderCharts(candidates){
+        const labels=candidates.map(c=>`Paslon ${c.ballot_code}`), values=candidates.map(c=>Number(c.votes||0)), colors=candidates.map((_,i)=>palette[i%palette.length]);
+        if(bar) bar.destroy();
+        bar=new Chart($('barChart'),{type:'bar',data:{labels,datasets:[{label:'Suara',data:values,backgroundColor:colors,borderRadius:10,maxBarThickness:82}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}});
+        if(pie) pie.destroy();
+        pie=new Chart($('pieChart'),{type:'doughnut',data:{labels,datasets:[{data:values,backgroundColor:colors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{legend:{position:'bottom'}}}});
+      }
+
+      function renderCandidates(candidates){
+        if(!candidates.length){$('candidateCards').innerHTML='<div class="panel empty">Belum ada kandidat aktif.</div>';return;}
+        $('candidateCards').innerHTML=candidates.map((c,i)=>`<article class="candidate">
+          <div class="candidate-media">${c.photo_url?`<img src="${esc(c.photo_url)}" alt="Paslon ${esc(c.ballot_code)}" loading="lazy">`:'<div class="placeholder">👥</div>'}<div class="badge" style="background:${palette[i%palette.length]}">${esc(c.ballot_code)}</div></div>
+          <div class="candidate-body"><div class="names"><div><small>Calon Ketua</small><b>${esc(c.chair_name)}</b></div><div><small>Calon Wakil</small><b>${esc(c.vice_name)}</b></div></div>
+          <p class="vision"><b>Visi:</b> ${esc(c.vision||'-')}</p>
+          <div class="vote-row"><div><span>Perolehan</span><strong>${Number(c.votes||0)}</strong></div><div style="text-align:right"><span>Persentase</span><strong>${Number(c.percentage||0).toLocaleString('id-ID')}%</strong></div></div></div>
+        </article>`).join('');
+      }
+
+      async function load(){
+        if(loading||!sb) return; loading=true; clearError();
+        try{
+          const {data,error}=await sb.rpc('public_election_dashboard',{p_unit:unit});
+          if(error) throw error;
+          if(!data) throw new Error(`Data pemilihan ${unit} tidak ditemukan.`);
+          const candidates=Array.isArray(data.candidates)?data.candidates:[];
+          $('schoolTitle').textContent=`${data.school_name || unit+' AL-MIFTAH'} — ${data.title || 'Pemilihan OSIS'}`;
+          $('subtitle').textContent=`Periode ${data.period || '-'} • ${data.is_active?'Pemilihan sedang aktif':'Pemilihan tidak aktif'}`;
+          $('totalStudents').textContent=data.total_students ?? 0;
+          $('votedStudents').textContent=data.voted_students ?? 0;
+          $('remainingStudents').textContent=data.remaining_students ?? 0;
+          $('participation').textContent=`${Number(data.participation_percentage||0).toLocaleString('id-ID')}% partisipasi`;
+          $('candidateCount').textContent=candidates.length;
+          $('updated').textContent=`Terakhir diperbarui: ${new Date().toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'medium'})}`;
+          renderCharts(candidates); renderCandidates(candidates);
+        }catch(err){showError('Gagal memuat data: '+(err.message||err));}
+        finally{loading=false;}
+      }
+
+      function init(){
+        updateButtons();
+        $('smpBtn').onclick=()=>setUnit('SMP'); $('smaBtn').onclick=()=>setUnit('SMA'); $('refreshBtn').onclick=load;
+        if(!cfg.SUPABASE_URL || !cfg.SUPABASE_PUBLISHABLE_KEY || cfg.SUPABASE_URL.includes('YOUR_PROJECT_ID')){
+          showError('config.js belum berisi Project URL dan Publishable Key Supabase.'); return;
+        }
+        sb=window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+        load(); setInterval(load,10000);
+      }
+      document.addEventListener('DOMContentLoaded',init);
+    })();
+  </script>
+</body>
+</html>
