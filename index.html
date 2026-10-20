@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b3a67" />
+  <title>Pemilihan OSIS SMP/SMA Al-Miftah</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <section id="loginView" class="auth-shell">
+    <div class="auth-card">
+      <div class="brand-mark">AM</div>
+      <div>
+        <p class="eyebrow">SISTEM PEMILIHAN OSIS</p>
+        <h1>SMP/SMA AL-MIFTAH</h1>
+        <p class="muted">RFID USB • Supabase • GitHub Pages</p>
+      </div>
+      <form id="loginForm" class="stack gap-md">
+        <label>Email admin/operator
+          <input id="loginEmail" type="email" autocomplete="username" placeholder="admin@almiftah.sch.id" required />
+        </label>
+        <label>Password
+          <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required />
+        </label>
+        <button class="btn primary" type="submit">Masuk ke Aplikasi</button>
+      </form>
+      <div class="info-box small">Gunakan akun yang dibuat di Supabase Auth. Jangan pernah menaruh <b>service_role key</b> di file GitHub.</div>
+    </div>
+  </section>
+
+  <div id="appView" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="brand-row">
+        <div class="brand-mark small">AM</div>
+        <div>
+          <strong>AL-MIFTAH</strong>
+          <span>Sistem Pemilihan OSIS</span>
+        </div>
+      </div>
+
+      <nav id="mainNav" class="nav-list">
+        <button data-view="dashboard" class="nav-item active">▦ <span>Dashboard</span></button>
+        <button data-view="students" class="nav-item">👥 <span>Data Siswa</span></button>
+        <button data-view="candidates" class="nav-item">★ <span>Kandidat</span></button>
+        <button data-view="kiosk" class="nav-item">⌁ <span>Pemilihan RFID</span></button>
+        <button data-view="calling" class="nav-item">🔊 <span>Pemanggilan Siswa</span></button>
+        <button data-view="import" class="nav-item">⇩ <span>Import Excel</span></button>
+        <button data-view="settings" class="nav-item">⚙ <span>Pengaturan RFID</span></button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div id="profileMini" class="profile-mini"></div>
+        <button id="logoutBtn" class="btn ghost full">Keluar</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="pageEyebrow">SISTEM PEMILIHAN</p>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+        <div class="top-actions">
+          <label class="unit-select">Jenjang
+            <select id="unitSelect">
+              <option value="SMP">SMP</option>
+              <option value="SMA">SMA</option>
+            </select>
+          </label>
+          <div class="clock-card">
+            <span id="dateNow">-</span>
+            <strong id="clockNow">--:--:--</strong>
+          </div>
+        </div>
+      </header>
+
+      <section id="dashboardView" class="view active">
+        <div class="hero-card">
+          <div>
+            <p class="eyebrow white">PEMILIHAN KETUA & WAKIL KETUA OSIS</p>
+            <h1 id="heroTitle">SMP AL-MIFTAH</h1>
+            <p>Jujur • Aman • Transparan • Satu siswa satu suara</p>
+          </div>
+          <button id="openKioskBtn" class="btn light">Buka Mode Pemilihan →</button>
+        </div>
+
+        <div class="stat-grid">
+          <article class="stat-card blue"><span>Total Siswa</span><strong id="statTotal">0</strong><small>terdaftar</small></article>
+          <article class="stat-card green"><span>Sudah Memilih</span><strong id="statVoted">0</strong><small id="statVotedPct">0%</small></article>
+          <article class="stat-card orange"><span>Belum Memilih</span><strong id="statRemaining">0</strong><small id="statRemainingPct">0%</small></article>
+          <article class="stat-card purple"><span>Jumlah Kandidat</span><strong id="statCandidates">0</strong><small>paslon aktif</small></article>
+        </div>
+
+        <div class="grid-2">
+          <article class="panel">
+            <div class="panel-head"><h3>Grafik Hasil Pemilihan</h3><button id="refreshDashboardBtn" class="btn mini ghost">↻ Refresh</button></div>
+            <div class="chart-wrap"><canvas id="resultChart"></canvas></div>
+          </article>
+          <article class="panel">
+            <h3>Persentase Suara</h3>
+            <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="studentsView" class="view">
+        <div class="panel">
+          <div class="panel-head wrap">
+            <div><h3>Data Siswa</h3><p class="muted">Siswa dipisah otomatis berdasarkan jenjang yang dipilih.</p></div>
+            <input id="studentSearch" class="search" placeholder="Cari nama, NISN, atau kelas..." />
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>NISN</th><th>Nama</th><th>Kelas</th><th>Status</th></tr></thead><tbody id="studentsTableBody"></tbody></table></div>
+        </div>
+      </section>
+
+      <section id="candidatesView" class="view">
+        <div class="grid-2 align-start">
+          <article class="panel">
+            <h3>Kelola Kandidat OSIS</h3>
+            <form id="candidateForm" class="form-grid">
+              <input id="candidateId" type="hidden" />
+              <label>Kode Paslon
+                <select id="ballotCode" required>
+                  <option value="A">Paslon A</option>
+                  <option value="B">Paslon B</option>
+                  <option value="C">Paslon C</option>
+                  <option value="D">Paslon D</option>
+                </select>
+              </label>
+              <label>Nama Calon Ketua<input id="chairName" required /></label>
+              <label>Nama Calon Wakil<input id="viceName" required /></label>
+              <label class="span-2">Visi<textarea id="candidateVision" rows="3" required></textarea></label>
+              <label class="span-2">Foto/Poster Kandidat<input id="candidatePhoto" type="file" accept="image/*" /></label>
+              <div class="span-2 row-actions">
+                <button class="btn primary" type="submit">Simpan Kandidat</button>
+                <button id="resetCandidateBtn" class="btn ghost" type="button">Bersihkan</button>
+              </div>
+            </form>
+          </article>
+          <article class="panel">
+            <h3>Kandidat Aktif</h3>
+            <div id="candidateCards" class="candidate-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="kioskView" class="view">
+        <div class="kiosk-shell">
+          <div class="steps"><span class="on">1 Verifikasi</span><i></i><span class="on">2 Pilih Kandidat</span><i></i><span>3 Konfirmasi</span></div>
+          <div class="kiosk-head">
+            <div>
+              <p class="eyebrow">MODE PEMILIHAN RFID</p>
+              <h2 id="kioskUnitTitle">SMP AL-MIFTAH</h2>
+            </div>
+            <span id="rfidState" class="status-pill warn">Menunggu kartu RFID</span>
+          </div>
+
+          <article id="currentStudentCard" class="current-student empty">
+            <div class="avatar">👤</div>
+            <div><small>Siswa yang sedang memilih</small><h3 id="currentStudentName">Belum ada siswa dipanggil</h3><p id="currentStudentMeta">Buka menu Pemanggilan Siswa lalu pilih siswa.</p></div>
+          </article>
+
+          <div id="kioskCandidateCards" class="kiosk-candidates"></div>
+
+          <div class="rfid-reader-card">
+            <div class="reader-visual"><div class="pulse"></div><span>RFID</span></div>
+            <div><h3>Tempelkan Kartu RFID A, B, C, atau D</h3><p>Reader USB yang bertindak sebagai keyboard akan mengirim UID lalu Enter. Aplikasi akan mencocokkan UID dengan Paslon A/B/C/D.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="callingView" class="view">
+        <div class="grid-2 align-start">
+          <article class="panel">
+            <h3>Pemanggilan Siswa</h3>
+            <div class="form-grid">
+              <label>Pilih Kelas<select id="callClass"><option value="">Semua kelas</option></select></label>
+              <label>Urutan<select id="callOrder"><option value="name">Berdasarkan Nama</option><option value="random">Acak</option></select></label>
+            </div>
+            <div class="row-actions top-gap">
+              <button id="callNextBtn" class="btn primary">🔊 Panggil Siswa Berikutnya</button>
+              <button id="skipBtn" class="btn ghost">Lewati</button>
+            </div>
+          </article>
+          <article class="panel called-card">
+            <p class="eyebrow">SISWA YANG DIPANGGIL</p>
+            <h2 id="calledName">Belum ada</h2>
+            <p id="calledMeta" class="muted">Pilih kelas lalu tekan tombol panggil.</p>
+            <span id="calledVoteStatus" class="status-pill">Menunggu</span>
+          </article>
+        </div>
+      </section>
+
+      <section id="importView" class="view">
+        <div class="grid-2 align-start">
+          <article class="panel">
+            <h3>Import Data Siswa dari Excel</h3>
+            <p class="muted">Format yang didukung: .xlsx, .xls, .csv. Data dimasukkan ke jenjang yang sedang dipilih.</p>
+            <div id="dropZone" class="drop-zone">
+              <div class="excel-icon">X</div>
+              <strong>Pilih file Excel</strong>
+              <span>atau seret file ke area ini</span>
+              <input id="excelFile" type="file" accept=".xlsx,.xls,.csv" hidden />
+              <button id="chooseExcelBtn" class="btn ghost" type="button">Pilih File</button>
+            </div>
+            <div class="row-actions top-gap">
+              <a class="btn ghost" href="template-siswa.xlsx" download>Download Template Excel</a>
+              <button id="importExcelBtn" class="btn primary" disabled>Import ke Supabase</button>
+            </div>
+            <div id="importStatus" class="info-box small hidden"></div>
+          </article>
+          <article class="panel">
+            <h3>Format Kolom Excel</h3>
+            <div class="format-list"><span>1</span><b>NISN</b><small>wajib & unik per jenjang</small><span>2</span><b>Nama Siswa</b><small>wajib</small><span>3</span><b>Kelas</b><small>contoh: VII A</small><span>4</span><b>Tingkat</b><small>opsional: SMP/SMA</small></div>
+            <div id="excelPreview" class="table-wrap compact"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="settingsView" class="view">
+        <div class="grid-2 align-start">
+          <article class="panel">
+            <h3>Daftarkan Kartu RFID Paslon</h3>
+            <p class="muted">Klik kolom UID lalu tempelkan kartu RFID ke reader USB. Biasanya UID akan masuk seperti ketikan keyboard.</p>
+            <form id="rfidCardForm" class="form-grid">
+              <label>Paslon<select id="rfidCandidate" required></select></label>
+              <label>UID Kartu RFID<input id="rfidUid" autocomplete="off" placeholder="Tempelkan kartu..." required /></label>
+              <div class="span-2 row-actions"><button class="btn primary" type="submit">Simpan Kartu RFID</button></div>
+            </form>
+          </article>
+          <article class="panel">
+            <h3>Status Konfigurasi</h3>
+            <div id="rfidConfigList" class="stack gap-sm"></div>
+            <div class="info-box small top-gap"><b>Catatan:</b> jangan gunakan UID kartu siswa sebagai kartu pilihan. Gunakan empat kartu khusus untuk Paslon A, B, C, dan D agar alur pemilihan tetap sederhana dan konsisten.</div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
